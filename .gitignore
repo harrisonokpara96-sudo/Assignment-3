@@ -1,0 +1,10 @@
+node_modules/
+.env
+.DS_Store
+views/about.ejs
+views/contact.ejs
+public/css/styles.css
+public/js/scripts.js
+logs/
+database.sqlite
+style.css
