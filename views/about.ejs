@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us</title>
-  <link rel="stylesheet" href="/css/style.css"> <!-- Link to the CSS file -->
-</head>
-<body>
-  <!-- Header -->
-  <header>
-    <h1>About Us</h1>
-  </header>
+<%- include('partials/header') %>
 
-  <!-- Main Content -->
-  <div class="container about">
-    <h2>Welcome to my Website!</h2>
-    <p>This is a simple CRUD application where you can manage your items and send us messages. You can easily create, read, update, and delete your records.</p>
+<main class="container py-5">
+  <div class="text-center">
+    <h1 class="display-6 fw-bold mb-3">About This App</h1>
+
+    <p class="lead mb-4">
+      This Workout Tracker helps you organize and manage your fitness goals.
+      Log exercises, track progress, and build healthy habits — one workout at a time.
+    </p>
+
+    <p>
+      Created by <strong>Harrison Okpara</strong> 
+      for INFR3120 Web & Scripting at Ontario Tech University 🇨🇦
+    </p>
   </div>
+</main>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Your Website | <a href="/contact">Contact Us</a></p>
-  </footer>
-</body>
-</html>
+<%- include('partials/footer') %>

@@ -1,34 +1,81 @@
+// server.js
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const nodemailer = require('nodemailer');
+const connectDB = require('./config/db');
+
 const app = express();
 
-// Load environment variables from .env file
-dotenv.config();
+// Connect to DB
+connectDB();
 
-// Middleware to parse incoming form data and JSON
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-
-// Set EJS as the view engine
+// View setup
 app.set('view engine', 'ejs');
-
-// Set the directory for views (where the EJS files are stored)
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve static files (e.g., CSS, images, JavaScript)
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Import the routes from the routes/index.js file
-const indexRoutes = require('./routes/index');  // Import your routes here
-app.use('/', indexRoutes);  // Use the routes
-
-// Define the server's port (default to 3000)
-const port = process.env.PORT || 3000;
-
-// Start the server and listen on port 3000
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// Gmail email transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
 });
 
+// HOME PAGE
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Home' });
+});
+
+// ABOUT PAGE
+app.get('/about', (req, res) => {
+  res.render('about', { title: 'About' });
+});
+
+// CONTACT PAGE
+app.get('/contact', (req, res) => {
+  res.render('contact', { title: 'Contact', sent: false, error: null });
+});
+
+app.post('/contact', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.CONTACT_EMAIL,
+      subject: `New Contact Message: ${name}`,
+      text: `From: ${name} (${email})\n\n${message}`
+    });
+
+    res.render('contact', { title: 'Contact', sent: true, error: null });
+  } catch (err) {
+    console.error(err);
+    res.render('contact', {
+      title: 'Contact',
+      sent: false,
+      error: 'Error sending message. Try again later.'
+    });
+  }
+});
+
+// ROUTES FOR WORKOUT CRUD
+const workoutRoutes = require('./routes/workouts');
+app.use('/workouts', workoutRoutes);
+
+// 404 fallback
+app.use((req, res) => {
+  res.status(404).render('index', { title: 'Not Found' });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(`🚀 Server running at http://localhost:${3000}`)
+);

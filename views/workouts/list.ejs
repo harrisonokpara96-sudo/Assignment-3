@@ -1,0 +1,54 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">All Workouts</h1>
+  <a href="/workouts/new" class="btn btn-primary">+ Add Workout</a>
+</div>
+
+<% if (workouts.length === 0) { %>
+  <div class="alert alert-info">
+    No workouts yet. <a href="/workouts/new">Create your first workout</a>.
+  </div>
+<% } else { %>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Duration (min)</th>
+          <th>Intensity</th>
+          <th>Date</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% workouts.forEach(workout => { %>
+          <tr>
+            <td><%= workout.title %></td>
+            <td><%= workout.type %></td>
+            <td><%= workout.duration %></td>
+            <td><%= workout.intensity %></td>
+            <td><%= workout.date.toLocaleDateString() %></td>
+            <td class="text-end">
+              <a href="/workouts/<%= workout._id %>/edit" class="btn btn-sm btn-outline-secondary">
+                Edit
+              </a>
+              <form
+                action="/workouts/<%= workout._id %>?_method=DELETE"
+                method="POST"
+                class="d-inline"
+                onsubmit="return confirm('Are you sure you want to delete this workout?');">
+                <button type="submit" class="btn btn-sm btn-danger">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>

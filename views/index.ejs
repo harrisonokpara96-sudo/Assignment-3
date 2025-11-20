@@ -1,32 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="/css/style.css"> <!-- Link to the CSS file -->
-</head>
-<body>
-  <!-- Header -->
-  <header>
-    <h1>Welcome to Our CRUD Application</h1>
-  </header>
+<%- include('partials/header') %>
 
-  <!-- Main Content -->
-  <div class="container">
-    <p>This application allows you to create, update, view, and delete items. You can also contact us or learn more about the website.</p>
+<main class="container py-5">
+  <section class="text-center">
+    <h1 class="fw-bold mb-3">Stay on Top of Your Fitness</h1>
+    <p class="lead mb-4">
+      Track workouts, stay motivated, and reach your goals – all in one place.
+    </p>
 
-    <nav>
-      <a href="/create">Create Item</a>
-      <a href="/items">View Items</a>
-      <a href="/about">About Us</a>
-      <a href="/contact">Contact Us</a>
-    </nav>
-  </div>
+    <a href="/workouts" class="btn btn-primary btn-lg me-2">View Workouts</a>
+    <a href="/workouts/new" class="btn btn-outline-light btn-lg">Add Workout</a>
+  </section>
+</main>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Your Website</p>
-  </footer>
-</body>
-</html>
+<%- include('partials/footer') %>
