@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+
+<main class="container py-5 text-center">
+  <h1 class="fw-bold mb-4">All Workouts</h1>
+
+  <% if (workouts.length === 0) { %>
+    <p class="text-muted">No workouts yet. Add your first one!</p>
+  <% } else { %>
+    <div class="list-group">
+      <% workouts.forEach(workout => { %>
+        <a href="/workouts/<%= workout._id %>" class="list-group-item list-group-item-action">
+          <strong><%= workout.title %></strong>
+          <span class="text-muted"> — <%= workout.date.toDateString() %></span>
+        </a>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <a href="/workouts/new" class="btn btn-primary mt-4">+ Add Workout</a>
+</main>
+
+<%- include('../partials/footer') %>
