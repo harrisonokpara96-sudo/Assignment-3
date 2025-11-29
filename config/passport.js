@@ -1,22 +1,23 @@
 // config/passport.js
-// complete google + github passport configuration
+// Google + GitHub OAuth configuration
 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 
-// IMPORTANT — lowercase path because Render/Linux is case-sensitive
+// IMPORTANT: Linux/Render is case-sensitive → use lowercase user.js
 const User = require("../models/user.js");
 
 module.exports = function (passport) {
+  /* ============================================
+     SESSION HANDLING
+  ============================================ */
 
-  /* -------------------- SESSION HANDLING -------------------- */
-
-  // save user id in the session
+  // store user id inside the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
 
-  // retrieve user from the session
+  // get user from stored session id
   passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findById(id);
@@ -26,7 +27,9 @@ module.exports = function (passport) {
     }
   });
 
-  /* -------------------- GOOGLE STRATEGY -------------------- */
+  /* ============================================
+     GOOGLE STRATEGY
+  ============================================ */
 
   passport.use(
     new GoogleStrategy(
@@ -62,7 +65,9 @@ module.exports = function (passport) {
     )
   );
 
-  /* -------------------- GITHUB STRATEGY -------------------- */
+  /* ============================================
+     GITHUB STRATEGY
+  ============================================ */
 
   passport.use(
     new GitHubStrategy(
@@ -97,5 +102,4 @@ module.exports = function (passport) {
       }
     )
   );
-
-}; // 🔥 THIS is the missing closing bracket
+};
