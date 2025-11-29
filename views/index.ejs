@@ -9,13 +9,13 @@
   <a href="/workouts" class="btn btn-primary btn-lg">View Workouts</a>
 
   <% if (!user) { %>
-  <a href="/auth/google" class="btn btn-outline-light btn-lg ms-3">
-    Login to Add Workout
-  </a>
+    <a href="/auth/google" class="btn btn-dark btn-lg ms-3">
+      Login to Add Workout
+    </a>
   <% } else { %>
-  <a href="/workouts/new" class="btn btn-outline-light btn-lg ms-3">
-    + Add Workout
-  </a>
+    <a href="/workouts/new" class="btn btn-success btn-lg ms-3">
+      + Add Workout
+    </a>
   <% } %>
 </main>
 
