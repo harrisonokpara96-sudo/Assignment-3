@@ -1,15 +1,18 @@
 <%- include('partials/header') %>
 
-<main class="container py-5">
-  <section class="text-center">
-    <h1 class="fw-bold mb-3">Stay on Top of Your Fitness</h1>
-    <p class="lead mb-4">
-      Track workouts, stay motivated, and reach your goals – all in one place.
-    </p>
+<main class="container py-5 text-center">
+  <h1 class="fw-bold mb-3">Stay on Top of Your Fitness</h1>
+  <p class="lead mb-4">
+    Track workouts, stay motivated, and reach your goals – all in one place.
+  </p>
 
-    <a href="/workouts" class="btn btn-primary btn-lg me-2">View Workouts</a>
+  <a href="/workouts" class="btn btn-primary btn-lg me-2">View Workouts</a>
+
+  <% if (user) { %>
     <a href="/workouts/new" class="btn btn-outline-light btn-lg">Add Workout</a>
-  </section>
+  <% } else { %>
+    <a href="/auth/google" class="btn btn-outline-light btn-lg">Login to Add Workout</a>
+  <% } %>
 </main>
 
 <%- include('partials/footer') %>

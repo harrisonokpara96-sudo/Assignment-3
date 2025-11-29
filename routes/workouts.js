@@ -1,91 +1,46 @@
-// routes/workouts.js
-
 const express = require('express');
 const router = express.Router();
 const Workout = require('../models/Workout');
 const { ensureAuth } = require('../middleware/auth');
 
-// List all workouts (anyone can see)
+// View all workouts (public)
 router.get('/', async (req, res) => {
-  try {
-    const workouts = await Workout.find().sort({ createdAt: -1 });
-    res.render('workouts/list', { title: 'All Workouts', workouts });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error Loading Workouts');
-  }
+  const workouts = await Workout.find().lean();
+  res.render('workouts/index', { workouts });
 });
 
-// Show form to create new workout (only logged in)
+// New workout form (protected)
 router.get('/new', ensureAuth, (req, res) => {
-  res.render('workouts/new', { title: 'Add Workout' });
+  res.render('workouts/new');
 });
 
-// Create new workout (only logged in)
+// Create workout (protected)
 router.post('/', ensureAuth, async (req, res) => {
   try {
-    const { title, type, duration, intensity, notes } = req.body;
-
-    await Workout.create({
-      title,
-      type,
-      duration,
-      intensity,
-      notes,
-    });
-
+    await Workout.create({ ...req.body, user: req.user.id });
     res.redirect('/workouts');
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error creating workout');
+    console.log(err);
+    res.send('Error');
   }
 });
 
-// Show edit form (only logged in)
+// Edit workout (protected)
 router.get('/:id/edit', ensureAuth, async (req, res) => {
-  try {
-    const workout = await Workout.findById(req.params.id);
-
-    if (!workout) {
-      return res.status(404).send('Workout not found');
-    }
-
-    res.render('workouts/edit', { title: 'Edit Workout', workout });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error loading workout');
-  }
+  const workout = await Workout.findById(req.params.id).lean();
+  res.render('workouts/edit', { workout });
 });
 
-// Update workout (only logged in)
+// Update workout (protected)
 router.put('/:id', ensureAuth, async (req, res) => {
-  try {
-    const { title, type, duration, intensity, notes } = req.body;
-
-    await Workout.findByIdAndUpdate(req.params.id, {
-      title,
-      type,
-      duration,
-      intensity,
-      notes,
-    });
-
-    res.redirect('/workouts');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error updating workout');
-  }
+  await Workout.findByIdAndUpdate(req.params.id, req.body);
+  res.redirect('/workouts');
 });
 
-// Delete workout (only logged in)
+// Delete workout (protected)
 router.delete('/:id', ensureAuth, async (req, res) => {
-  try {
-    await Workout.findByIdAndDelete(req.params.id);
-    res.redirect('/workouts');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error deleting workout');
-  }
+  await Workout.findByIdAndDelete(req.params.id);
+  res.redirect('/workouts');
 });
 
 module.exports = router;
