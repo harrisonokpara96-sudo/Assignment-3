@@ -3,7 +3,7 @@
 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
-const User = require("../models/user.js");
+const User = require("../User");  // <-- FIXED PATH
 
 module.exports = function (passport) {
   // how user info is stored in the session
@@ -40,11 +40,11 @@ module.exports = function (passport) {
               email:
                 profile.emails && profile.emails.length > 0
                   ? profile.emails[0].value
-                  : undefined,
+                  : null,
               avatar:
                 profile.photos && profile.photos.length > 0
                   ? profile.photos[0].value
-                  : undefined,
+                  : null,
             });
           }
 
@@ -75,11 +75,11 @@ module.exports = function (passport) {
               email:
                 profile.emails && profile.emails.length > 0
                   ? profile.emails[0].value
-                  : undefined,
+                  : null,
               avatar:
                 profile.photos && profile.photos.length > 0
                   ? profile.photos[0].value
-                  : undefined,
+                  : null,
             });
           }
 
