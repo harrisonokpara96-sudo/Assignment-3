@@ -1,0 +1,34 @@
+// models/User.js
+// simple user model for google + github logins
+
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema(
+  {
+    googleId: {
+      type: String,
+      index: true,
+    },
+    githubId: {
+      type: String,
+      index: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      trim: true,
+    },
+    avatar: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+module.exports = mongoose.model('User', userSchema);
