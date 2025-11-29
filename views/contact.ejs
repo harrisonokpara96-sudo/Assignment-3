@@ -1,61 +1,29 @@
-<%- include('partials/header') %>
+<%- include('partials/header', { title }) %>
 
-<main class="container py-5" style="max-width: 700px;">
-  <h2 class="fw-bold text-center mb-4">Contact Me</h2>
+<div class="container mt-5" style="max-width: 600px;">
+  <h1 class="text-center mb-4">Contact Us</h1>
 
   <% if (sent) { %>
-    <div class="alert alert-success text-center">✔ Message Sent!</div>
+    <div class="alert alert-success text-center">
+      Your message has been sent!
+    </div>
   <% } %>
 
   <form action="/contact" method="POST">
     <div class="mb-3">
-      <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required />
+      <input type="text" name="name" class="form-control" placeholder="First & Last Name" required>
     </div>
+
     <div class="mb-3">
-      <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required />
+      <input type="email" name="email" class="form-control" placeholder="Your Email" required>
     </div>
+
     <div class="mb-3">
-      <textarea name="message" class="form-control form-control-lg" rows="4" placeholder="Message" required></textarea>
+      <textarea name="message" rows="5" class="form-control" placeholder="Your Message" required></textarea>
     </div>
-    <button class="btn btn-primary btn-lg w-100">SEND</button>
+
+    <button class="btn btn-primary w-100">SEND</button>
   </form>
-</main>
-
-<%- include('partials/footer') %>
-
-
-  <form action="/contact" method="POST">
-    <div class="mb-3">
-      <input 
-        type="text" 
-        name="name" 
-        class="form-control form-control-lg" 
-        placeholder="First & Last Name"
-        required
-      >
-    </div>
-
-    <div class="mb-3">
-      <input 
-        type="email"
-        name="email"
-        class="form-control form-control-lg"
-        placeholder="Your Email"
-        required
-      >
-    </div>
-
-    <div class="mb-3">
-      <textarea
-        name="message"
-        rows="4"
-        class="form-control form-control-lg"
-        placeholder="Your Message"
-        required></textarea>
-    </div>
-
-    <button class="btn btn-primary btn-lg w-100">SEND</button>
-  </form>
-</main>
+</div>
 
 <%- include('partials/footer') %>
