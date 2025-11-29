@@ -4,12 +4,13 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 
-// 🔥 IMPORTANT — lowercase path for Render/Linux
+// IMPORTANT — lowercase path because Render/Linux is case-sensitive
 const User = require("../models/user.js");
 
 module.exports = function (passport) {
+
   /* -------------------- SESSION HANDLING -------------------- */
-  
+
   // save user id in the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -26,6 +27,7 @@ module.exports = function (passport) {
   });
 
   /* -------------------- GOOGLE STRATEGY -------------------- */
+
   passport.use(
     new GoogleStrategy(
       {
@@ -61,8 +63,39 @@ module.exports = function (passport) {
   );
 
   /* -------------------- GITHUB STRATEGY -------------------- */
+
   passport.use(
     new GitHubStrategy(
       {
         clientID: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GIT
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CALLBACK_URL,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          let user = await User.findOne({ githubId: profile.id });
+
+          if (!user) {
+            user = await User.create({
+              githubId: profile.id,
+              name: profile.displayName || profile.username,
+              email:
+                profile.emails && profile.emails.length > 0
+                  ? profile.emails[0].value
+                  : null,
+              avatar:
+                profile.photos && profile.photos.length > 0
+                  ? profile.photos[0].value
+                  : null,
+            });
+          }
+
+          return done(null, user);
+        } catch (err) {
+          return done(err, null);
+        }
+      }
+    )
+  );
+
+}; // 🔥 THIS is the missing closing bracket
